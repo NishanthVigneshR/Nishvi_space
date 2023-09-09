@@ -1,0 +1,35 @@
+Initial step of creating file is opening the file.
+If file open success means, it will return file descriptor (fd).
+fd is the minimum non-negative unique number.
+
+Further processing of the file, should be done by using that file descriptor.
+
+By default, three file descriptors will be already opened in the system.
+
+	  fd's  - Description		- Posix name		-	stdio stream
+
+	1] 0	- standard input	- STDIN_FILENO		-	stdin
+	2] 1	- standard output	- STDOUT_FILENO 	-	stdout
+	3] 2	- standard error	- STDERR_FILENO		-	stderr
+
+
+Syntax of open system call:
+	int open (const char* path, int flags, int mode);
+
+	int open (const char* path, int flags, ... /* mode_t mode */);
+
+	path and flag is mandatory parameters. Whereas, mode is an optoonal and it corresponds to one of the flag.
+
+	Path -> represents the file path to be opened.
+	flags -> Various flags are present. We can read, write, create the given path by using this flag parameter.
+
+	Common ones are O_WRONLY , O_RDONLY, O_RDWR AND O_CREAT.
+
+	O_CREAT is the special flag.
+	By using O_CREAT flag, we can create the provided path file newly if it's not present.
+	'mode' parameter is must when you use O_CREAT as part of flags.
+
+	Mode -> This parameter is used to specify the permission for the given path. (Need to use only if O_CREAT flag is used).
+
+Returns fd incase of success.
+Returns -1 and errno incase of failure.

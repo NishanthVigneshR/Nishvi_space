@@ -1,0 +1,58 @@
+
+Syntax :  chmod NNN <filename>
+	
+	N ranges from 0-7.
+	First N, assign permission to user,
+	Second N, assigns permission to group,
+	Third N, assigns permission to others.
+
+0	-	No permissions	-	---	- 	000
+1	-	Execute		-	--x	- 	001
+2	-	Write		-	-w-	- 	010
+3	-	Execute+write	-	-wx	- 	011
+4	-	read		-	r--	- 	100
+5	-	read+execute	-	r-x	- 	101
+6	-	read+write	-	rw-	-	110
+7	-	read+write+exec -	rwx	- 	111
+
+E.g:- chmod 753 file1
+
+	after executing above command, now file1 permission will be -rwxr-x-wx
+	user can read, write and execute file1
+	group can read and execute file2
+	others can write and execute file3.
+
+
+What will happen if you are not specifying permission for all the levels. (e.g:- chmod 4 file)
+
+Output:
+
+[nishanth@localhost linux_shell_learning]$ touch file1
+[nishanth@localhost linux_shell_learning]$ ls -l
+total 8
+-rw-r--r--. 1 nishanth nishanth    0 Aug 29 23:52 file1
+-rw-------. 1 nishanth nishanth 5090 Aug 29 23:43 file_permission.txt
+[nishanth@localhost linux_shell_learning]$
+[nishanth@localhost linux_shell_learning]$ chmod 5 file1
+[nishanth@localhost linux_shell_learning]$ ls
+file1  file_permission.txt
+[nishanth@localhost linux_shell_learning]$ ls -l
+total 8
+-------r-x. 1 nishanth nishanth    0 Aug 29 23:52 file1
+-rw-------. 1 nishanth nishanth 5090 Aug 29 23:43 file_permission.txt
+[nishanth@localhost linux_shell_learning]$
+[nishanth@localhost linux_shell_learning]$ chmod 53 file1
+[nishanth@localhost linux_shell_learning]$ ls
+file1  file_permission.txt
+[nishanth@localhost linux_shell_learning]$ ls -l
+total 8
+----r-x-wx. 1 nishanth nishanth    0 Aug 29 23:52 file1
+-rw-------. 1 nishanth nishanth 5090 Aug 29 23:43 file_permission.txt
+[nishanth@localhost linux_shell_learning]$
+[nishanth@localhost linux_shell_learning]$ chmod 453 file1
+[nishanth@localhost linux_shell_learning]$ ls -l
+total 8
+-r--r-x-wx. 1 nishanth nishanth    0 Aug 29 23:52 file1
+-rw-------. 1 nishanth nishanth 5090 Aug 29 23:43 file_permission.txt
+[nishanth@localhost linux_shell_learning]$ cat file1
+

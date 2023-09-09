@@ -1,0 +1,31 @@
+Userspace mode contains applications and it's related codes.
+It'll use high level languages such as c, c++.
+
+Userspace can't communicate with hardware directly.
+It needs kernel space as an intermediate b/w it and hardware.
+
+Kernel space will be core of the OS.
+It maintains 
+	1] File management,
+	2] Process management,
+	3] Process scheduling,
+	4] Memory management,
+	5] Virtual memory management etc..,
+
+Kernel space will use System calls to communicate with hardwares.
+
+	Userspace
+	   |
+	   |
+	   |
+	Kernel
+	   |
+	   |
+	   |
+	Hardware
+
+Ex:- printf will use write sytem call to print the given statement in the screen
+
+	char buf[] = "Hello Buddy!";
+	write(stdout (or) 1, buf, sizeof (buf));
+

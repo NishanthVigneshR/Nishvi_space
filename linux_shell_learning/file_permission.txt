@@ -1,0 +1,129 @@
+-rw-r--r--. 1 nishanth nishanth 637 Aug 29 23:23 file_permission.txt
+
+Three different type of file permission:
+
+1] Read 	- r
+2] Write 	- w
+3] Execute 	- x (running a program)
+
+Can be controlled at three levels:
+
+1] u - user (yourself)
+2] g - group 
+3] o - others or everyone on the system.
+
+It can seen by using ls command.
+
+drwxr-xr-x.  --> 1 bit       - type of file (file or directory or link or socket etc.,)
+	     --> next 3 bits - shows user permissions (rwx)
+	     --> bits 5-7    - shows group permissions (r-x)
+	     --> last 3 bits - shows others permission (r-x).
+
+
+--command to change permission is change mod (chmod).--
+
+command to remove permission- chmod <user_level>-<permission> <file_name>
+
+	chmod o-r file_permission.txt
+	Here, for others in the system removing permission for reading.
+
+if we need to remove certain permission for all users. we can use option 'a'.
+
+	(e.g):- chmod a-r <file_name>
+
+Command to add permission : chmod <level>+<needed_permissions>  <file_name>  
+	1] chmod u+r file1  -> adding read permission for file1 incase of user
+	2] chmod g+w file1  -> adding write permission incase of group
+	3] chmod o+r file1
+	4] chmod ugo+w file3
+
+(Output):-
+	
+	[nishanth@localhost linux_shell_learning]$ ls -l
+	total 4
+	-rw-r--r--. 1 nishanth nishanth 871 Aug 29 23:28 file_permission.txt
+	[nishanth@localhost linux_shell_learning]$
+	[nishanth@localhost linux_shell_learning]$ chmod o-r file_permission.txt
+	[nishanth@localhost linux_shell_learning]$ ls -l
+	total 4
+	-rw-r-----. 1 nishanth nishanth 871 Aug 29 23:28 file_permission.txt
+	
+	[nishanth@localhost linux_shell_learning]$ ls -l
+	total 4
+	-rw-r-----. 1 nishanth nishanth 1339 Aug 29 23:31 file_permission.txt
+	[nishanth@localhost linux_shell_learning]$ chmod a-r file_permission.txt
+	[nishanth@localhost linux_shell_learning]$ ls -l
+	total 4
+	--w-------. 1 nishanth nishanth 1339 Aug 29 23:31 file_permission.txt
+	[nishanth@localhost linux_shell_learning]$
+	[nishanth@localhost linux_shell_learning]$ cat file_permission.txt
+	cat: file_permission.txt: Permission denied
+	[nishanth@localhost linux_shell_learning]$ vim file_permission.txt
+	[nishanth@localhost linux_shell_learning]$ chmod u+r file_permission.txt
+	[nishanth@localhost linux_shell_learning]$ ls -l
+	total 4
+	-rw-------. 1 nishanth nishanth 1339 Aug 29 23:31 file_permission.txt
+	[nishanth@localhost linux_shell_learning]$
+	[nishanth@localhost linux_shell_learning]$ cat file_permission.txt
+	-rw-r--r--. 1 nishanth nishanth 637 Aug 29 23:23 file_permission.txt
+
+
+Incase of directories, it'll have executable permission 'x'. If this permission is removed means, we can't go inside that 
+directory.
+
+Output:
+
+[nishanth@localhost ~]$ ls -l
+total 0
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Desktop
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Documents
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Downloads
+drwxr-xr-x. 2 nishanth nishanth 65 Aug 29 23:40 linux_shell_learning
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Music
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Pictures
+drwxr-xr-x. 4 nishanth nishanth 44 Aug 27 08:40 program_practice
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Public
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Templates
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Videos
+[nishanth@localhost ~]$
+[nishanth@localhost ~]$
+[nishanth@localhost ~]$
+[nishanth@localhost ~]$ cd program_practice/
+[nishanth@localhost program_practice]$ cd ..
+[nishanth@localhost ~]$
+[nishanth@localhost ~]$ chmod u-x program_practice/
+[nishanth@localhost ~]$ ls -l
+total 0
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Desktop
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Documents
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Downloads
+drwxr-xr-x. 2 nishanth nishanth 65 Aug 29 23:40 linux_shell_learning
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Music
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Pictures
+drw-r-xr-x. 4 nishanth nishanth 44 Aug 27 08:40 program_practice
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Public
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Templates
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Videos
+[nishanth@localhost ~]$
+[nishanth@localhost ~]$ cd program_practice/
+-bash: cd: program_practice/: Permission denied
+[nishanth@localhost ~]$
+[nishanth@localhost ~]$ chmod u+x program_practice/
+[nishanth@localhost ~]$ ls -l
+total 0
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Desktop
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Documents
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Downloads
+drwxr-xr-x. 2 nishanth nishanth 65 Aug 29 23:40 linux_shell_learning
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Music
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Pictures
+drwxr-xr-x. 4 nishanth nishanth 44 Aug 27 08:40 program_practice
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Public
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Templates
+drwxr-xr-x. 2 nishanth nishanth  6 Aug 24 07:12 Videos
+[nishanth@localhost ~]$
+[nishanth@localhost ~]$
+[nishanth@localhost ~]$ cd program_practice/
+[nishanth@localhost program_practice]$
+
+

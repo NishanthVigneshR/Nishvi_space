@@ -1,0 +1,123 @@
+1]  Every variable will have three things. Name, value and memory address.
+
+2]  Pointer is special kind of variable, which will hold memory address of some other variable.
+
+3]  syntax: datatype * pointer_name; (int *a, int* a, int * a. All are correct ways in c).
+
+4]  pointer doesn't have data type. Pointer represents which datatype of address it will hold.
+        
+         E.g :- int * p;
+	 Here, P is the pointer which will hold the memory value of the variable whose datatype is int.
+	 int is not the data type of pointer P. It denotes that pointer p holds int variables's datatype.
+
+5]  '*' and '&' are two important operators used in pointer concept.
+
+	(1) '*' - Dereference (or) indirection operator
+	(2) '&' - Reference (or) addressof operator
+     
+     '*' is used for declaring pointer variable. While using '*' in declaration, it won't act as dereference operator.
+         It is also used to fetch the value , which is stored in memory address hold by pointer variable.
+
+     '&' is used for storing memory address of given variable in pointer variable.
+
+6]   By using format specifier '%x' we can print address of a variable in hexadecimal form.
+
+7]   pointer memory size is 4 bytes for 32-bits and 2 bytes for 16-bits.
+
+8] What will happen in below scenarios?
+    
+    (i) int *ptr;
+	float a = 10;
+	ptr = &a;
+
+        Soln:- We will get compilation error. Because, pointer 'ptr' is declared in such a way that it'll hold memory address                of integer variable. But, we are trying to store memory address of float variable. So, we will get error.
+
+    (ii) int *ptr;
+	 float a = 10;
+	 int b = 20;
+	 ptr = &a;
+	 ptr = &b;
+
+	 Soln :- We will get error. Because, C compilation will be done line by line. So, at 'ptr = &a' we will get
+		 incomptible error and compilation will fail.
+
+Pointer to pointer (Double pointer):
+
+Let's take below case
+	
+    Assume, I need to store address of one pointer.
+
+	int a = 10;
+	int * ptr = &a;   --> Here, we're telling compiler, ptr is the pointer which is going to hold address of int variable.				    'int' before '*' operator is telling that to compiler.
+
+    Now, assume I need to store address of 'ptr' pointer variable. How can we do that??
+
+	---- * ptr2 = &ptr;  --> I'm going to use ptr2 to store address of ptr. I left datatype blank. 
+				 what needs to be filled?
+	
+	Here, datatype of ptr is 'int *'. So, ptr2 pointer is going to hold memory address of variable whose datatype 
+	is 'int *'. Due to this, I need to fill the datatype as 'int *'. Thuss, this leads to using double pointer.
+
+	int ** ptr2 = &ptr;  ---> Thus, Double pointer used.
+
+	Now, think you need to store address of ptr2. So, we will use triple pointer.
+	int *** ptr3 = &ptr2;
+
+	Like this, it's keep on going.
+
+Pointer Arithmetic:
+
+Addition:
+
+1] we can't perform addition between two pointers. (e.g) p+q will fail.
+
+2] Assume, P is pointer variable. And, you executed 'p = p+2'. what will happen??
+
+	Let, P is integer pointer and it's holding memory address 1000 (Ofcourse, it'll be hexa in real time).
+	After executing p+2. It won't increment as 1002. It'll be 1008. How??
+
+	Whenever we are incrementing pointer, it'll increment by multipyling it with it's datatype.
+
+	(E.g):- p = p+2  --> p + 2 * sizeof(int) --> 1000 + 2 * (4) --> 1008.
+
+        Mostly, this concept will be useful for fetching values in arrays.
+
+	Array name by itself holds memory address.
+	Assume, array with name 'a'.
+
+	int a[5];
+	printf("%x", a);  --> We can fetch start addr of array 'a' by using this line.
+			      We can assign a to some pointer. By using pointer increment, we can fetch values in
+			      other linked addresses. 
+			      But, same pointer arithmetic we can't perform by using array_name.
+
+	ptr + 2 is valid.  But, a = a+2  is invalid. --> Because, array name is constant pointer and will have constant memory allocation.
+
+
+Subtraction:
+
+1] We can subtract the pointer with integer value (eg. p = p - 2). Same like addition, pointer will be decremented by it's data type size.
+
+	(E.g):- p = p-2 --> 1000 - 2 * sizeof (int)  --> 1000 - 2 *(4) --> 992.
+
+2] Unlike addition, we can do subtraction between two pointers. Resultant value will be number of elements between them, not an memory address.
+
+	(E.g) :- Assume, p = 1000 and q = 1012. Both are holding memory address of integer variable.
+		int d = q - p  --> 1012 - 1000  --> 12 (Now, we need to divide the difference bytes by memory address datatype's size)
+		So, here we need to divide it by sizeof int.
+
+		d = 12 / sizeof (int) --> 12/4 --> 3.
+
+		Result will be d = 3.
+
+
+Increment/Decrement operation:
+
+1]  Pointer pre-increment/decrement and post-increment/decrement will work as same as incrementing normal variables.
+
+    p++  and ++p  --> equals p = p+1. Precedence plays an important role.
+    p--  and --p  --> equals p = p-1.
+    (*p)++ and ++(*p) --> Here, value stored in p will be incremented.
+    (*p)-- and --(*p) --> Here, value stored in p will be decremented.
+
+/* Further theory and pointer concepts, captured in pointer_practice_self.c file. Thanks */
