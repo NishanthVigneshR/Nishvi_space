@@ -1,0 +1,33 @@
+dup/dup2 system call:
+
+dup/dup2 system call is used for duplicating the file descriptor for the same file.
+
+By using dup system call, we can make two file desciptors to point same file.
+
+Header file : #include <unistd.h>
+
+Syntax of dup call: dup (int oldfd);
+	where,
+		oldfd is the only parameter and it represents the fd of the file (already present in file descriptor table).
+
+Syntax of dup2 call: dup2 (int oldfd, int newfd);
+	where,
+		oldfd represents fd of the file (already it's present file descriptor table)
+		newfd represents the file descriptor need to be assigned (duplication) for the same file.
+
+Syntax of dup3 call: int dup3(int oldfd, int newfd, int flags);  //need to learn
+
+In case of dup call, the file pointed by oldfd will be duplicated and next minimum available file descriptor will be assigned as newfd for the same file and it'll be returned.
+
+In case of dup2 call, newfd represents the file descriptor which need to point the file. Even though newfd is already occupied by another file, we will close that fd silently and it'll be reused.
+
+Best example of dup2 call is, printf will always print the statement in screen by using fd (STDOUT (1)).
+	By using dup2 call, I can change it to print in file instead of screen.
+	dup2 (17, 1);  ---> Consider 17 is the fd pointing to some file.
+			    1 is already opened with stdout. dup2 will close the fd (1).
+			    Then, 1 will point to same file which pointed by fd (17).
+
+Return Values:
+	On success, returns newfd
+	On failure, returns -1.
+

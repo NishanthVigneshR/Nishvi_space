@@ -1,0 +1,20 @@
+1] File descriptor table
+2] Open file table
+3] inode table
+
+are the three important tables related to file system.
+
+There will be individual fd table for each process. The entry in fd table will be mapped with open file table.
+
+FD table will consist of two columns.
+	1] fd
+	2] offset pointer
+
+Open file table is generic and it's common for entire system.
+
+Open file table consists of third columns.
+	1] offset pointer
+	2] Flags for that corresponding file
+	3] inode pointer
+
+inode table consists of multiple columns.

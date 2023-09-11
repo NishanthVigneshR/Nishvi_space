@@ -1,0 +1,41 @@
+Read system call:
+
+Once the file opened successfully, we will get file descriptor of that file.
+
+By using that fd, we can read the data from that file.
+
+Header file : #include <unistd.h>
+
+Syntax:
+	read (int fd, (void *) buffer, size_t count);
+
+	where,
+		fd represents file descriptor of the given file.
+		buffer represents the string in which the read data to be stored.
+		count represents number of bytes need to be copied to buffer string.
+
+After reading initialize last index iwht null character.
+
+Write system call:
+
+Same like read, we will use fd to write the data into the file.
+
+Header file : #include <unistd.h>
+
+Syntax:
+	write (int fd, (void *) buffer, size_t count);
+
+	where,
+		fd represents file descriptor of the given file.
+		buffer represents the string to be written in the given file.
+		count represents the number of bytes to be filled in file.
+
+Offset pointer will be there and it will play an important role in read/write.
+Once we read/write the data from/to the file, this offset pointer will be moved to next byte need to be read/write.
+In this way, printing same data again and again can be avoided.
+
+Return Value:
+
+	If success, returns number of bytes read/write.
+	If failure, returns -1.
+	If the file reaches EOD, returns 0.

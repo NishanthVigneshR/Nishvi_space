@@ -1,0 +1,30 @@
+lseek system call:
+	lseek system call is used to set the offset pointer at the desired point.
+	For example, if we read the file, it will start from the beginning. Next read, will be started from where it left off.
+	While writing, always we will write from end of the file. Offset pointer will be pointing to EOF.
+
+	By using lseek system call, we can make offset pointer to point the desired byte.
+
+Header file: #include <unistd.h>
+
+Syntax:
+	lseek (int fd, off_t offset, int whence);
+	where,
+		fd  represents file descriptor.
+		offset represents number of bytes to be moved
+		whence represents whether we need to moved from start or current position or end of the file.
+
+	(E.g) :- lseek(fd, 3, SEEK_CUR);
+
+	SEEK_SET
+              The file offset is set to offset bytes.
+
+        SEEK_CUR
+              The file offset is set to its current location plus offset bytes.
+
+	SEEK_END
+              The file offset is set to the size of the file plus offset bytes.
+
+Return Value:
+	Returns -1 on failure
+	Returns current offset position on success

@@ -1,0 +1,4 @@
+Race Conditions:
+	When the same files is accessed and we are trying to write from two different processes at the same time. 
+	Compiler won't know which to write first. So, compiler will be confused and two processes will be racing against each other to write the given data. Thus, we may end up in undefined behaviour.
+	This is race condition.
