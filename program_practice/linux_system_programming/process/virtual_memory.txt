@@ -1,0 +1,49 @@
+Main memory/ physical memory/ RAM plays an important role in executing the process.
+Mostly, main memory will be smaller in size and we need to use it efficiently to execute all the processes without any flaws.
+
+By using Virtual memory we can efficiently use main memory.
+Each process will be assigned with separate virtual memory (In 32-bit, 4GB per process).
+
+This virtual memory block of each process will be unique. So, the overlap issue won't be occurred.
+
+Each process virtual memory will have both user space and kernel space memory.
+
+As Stack memory grows, it'll assign memory address in decremented order.
+But, As heap memory grows, it'll assign memory address in incremented order.
+
+		start of stack ----   2000
+				|
+				|
+	stack page_break      -----   1700
+				|
+				|
+				|  [Un-allocated memory]
+				|
+				|
+	Heap page_break	     ------ 1100
+				|
+				|
+	Heap start address  ------- 1000
+
+If stack and heap address overlaps, we will end up in stack overflow error.
+
+Virtual memory will be spiltted into small parts and it's known as paging. By defauly, it'll be 4096 bytes (4K).
+
+Unused pages won't be present in main memory and it'll holded by swap memory.
+Once the page got some data and it needs to be executed, then it'll be moved to main memory of the system.
+
+Every process will maintain 'page table' to monitor and process the page frames.
+
+Page table will maintain the data which points which page frame of main memory is holding the particular page memory of the process.
+
+	(E.g) :- page frame 1 of process-A is holding some data.
+		 page frame 5 of main memory is pointing to page frame 1 of process-A.
+
+	Page table will maintain this mapping b/w main memory and process virtual memory.
+
+Shared memory:
+	In some scenarios, two processes will be programmed in a way that both these processes should use same page frame in main memory. 
+	For example, page frame 4 of process-A and page frame 2 of process-B will be using page frame 7 of main memory.
+
+Page fault:
+	Page fault occurs when the process tried to access the page frame which is not currently present in main memory.

@@ -1,0 +1,30 @@
+4 segments:
+
+1] Text segment 	(Code)
+2] Data segement 	(global/static variables)
+	(I) Uninitilaized data segment
+	(II) Initialized data segment
+3] Stack segment	(local variables)
+4] Heap segment		(dynamic allocation)
+
+All the comments and codes will be in text segment. It's read-only segment.
+
+In data segment, global and static variables will be present.
+	Initialized variables will be present in initialized data segment,
+	Uninitialized variables will be present in uninitialized data segment.
+
+Stack segement will hold all the stack memory address holding functions and variablesinformation.
+
+Variables with runtime allocated memory will be present in Heap segment.
+
+E.g :- 
+	char *p = "hello"; --> Here, P is pointer and it'll be stored in stack segment.
+				'hello' is the string and it'll be stored in text segment. Since, it's read only. We can't 
+				manipulate the the value in p.
+
+	static int a = 0; --> data segment.
+	int a = 5;	  --> Stack segment
+	char *p = (char *) malloc (10);  --> p pointer will be in stack segment. But, it'll hold 10 malloced bytes and 
+					     it'll be in heap segment.
+
+	Refer, resource directory code.

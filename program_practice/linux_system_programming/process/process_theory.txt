@@ -1,0 +1,52 @@
+Process is an instance of executing the program.
+
+gcc dhcp.c -o dhcp
+./dhcp --> Here dhcp is the process.
+
+Every process will have unique id known as pid.
+process '0' is first process known as 'swapper' process.
+Swapper process will fork process 1 known as 'init' process.
+
+Init process will become parent of all the orphan process.
+Init process plays an major role as it monitors all the running processes.
+
+man page :- man 8 init
+
+Linux kernel can have processes upto 32767 processes (32-bit default).
+
+/proc/sys/kernel/pid_max file holds maximum supported processes value.
+
+Output:
+	[root@localhost ~]# cat /proc/sys/kernel/pid_max
+	4194304
+
+'ps' command is used to list down all the processes.
+
+Output:
+
+[root@localhost ~]# ps -ef
+UID          PID    PPID  C STIME TTY          TIME CMD
+root           1       0  0 03:47 ?        00:00:02 /usr/lib/systemd/systemd rhgb --switched-root --system --deserialize 31
+root           2       0  0 03:47 ?        00:00:00 [kthreadd]
+
+We can find pid by using below calls.
+Header file: #include <unistd.h>
+
+Synatc for getting PID  : pid_t getpid(void);
+Syntax for getting PPID : pid_t getppid(void);
+
+Returns pid of the process in success case. There won't be failure case.
+
+In each instance, pid of the process may vary. But, PPID of the process won't vary until it executed from different module.
+
+Output:
+	[root@localhost process]# ./process_basic_pid_finding_code
+	PID of the process : 3390, PPID of the process : 3059
+	[root@localhost process]#
+	[root@localhost process]# ./process_basic_pid_finding_code
+	PID of the process : 3391, PPID of the process : 3059
+	[root@localhost process]#
+	[root@localhost process]# ps | grep 3059
+	   3059 pts/1    00:00:00 bash
+
+

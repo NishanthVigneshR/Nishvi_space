@@ -1,0 +1,7 @@
+1] Process will be created by using 'fork' system call and it will be in 'created' state.
+2] 'Ready to run' state in main memory or swap memory.
+3] 'Sleep' state in main memory or swap memory.
+4] 'Blocked' state in main memory or swap memory.
+5] 'Running' state in main memory.
+6] 'Terminated' state.
+

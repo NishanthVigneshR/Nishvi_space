@@ -1,0 +1,29 @@
+fork is the system call used for creating a process.
+The process created is child process. The process from which fork() called will be parent process.
+
+Header file : #include <unistd.h>
+
+Syntax : pid_t fork(void);
+
+Return values:
+	On success, fork call will return twice.
+		1] In parent process, returns PID of the created child process.
+		2] In child process, returns 0.
+	On failure, returns -1 to parent process.
+
+Lines above fork call will be in parent process. But, child process can access the variables above the fork call as well.
+But, if you update the variable values further means, it won't be replicated in another process.
+
+ie., Updating the variable in child process won't reflect in parent process. Parent will hold old value itself and it'll process with old value.
+
+Next line from the fork() call will be executed twice (Once in parent and once in child).
+In child process, full code won't be executed. The lines below fork call only will be executed. But, full code will be copied to text segment of the child process.
+Child process will have have it's own set of virtual memory.
+Initially, all the memory segments data will be copied to child process memory.
+Data segments which is declared above fork call, will be holding same value. Once it updated, it'll differ and it won't reflect in abother process.
+
+Copy on write:
+	Now, we are duplicating entire page frames to child process. We can eliminate this by using copy on write feature.
+	Both the parent and child process will use same virtual memory.
+	Only modified page frames will be copied to corresponding individual memory. This is known as copy-on-write.
+
