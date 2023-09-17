@@ -1,0 +1,68 @@
+Wait:
+	Once we forked the process, parent process and child process will be executed based on system scheduling.
+	There is a possibility, parent process will be executed before child process completion and it will be orphan.
+	Even child will be completed sooner and it can turn to zombie process.
+
+	Wait system call is used to make the parent process to hold processing until the termination of child process.
+
+Header file : #include <sys/wait.h>
+
+Syntax:
+	pid_t wait (int *status);
+	where,
+		status is the parameter which will be filled with information about exit. It can be NULL.
+		If we provide NULL, we can't see the status due to which child process terminated.
+
+Usually exit() call will be used terminate the process.
+Another way to terminate the process is killing the process with signal.
+
+Status parameter will be updated differently for both exit() and kill.
+Consider 16-bit number as status integer.
+
+1] Process terminated by Exit():
+	In this case, first 8 bit will be nocare (X).
+	Bits from 8-15 only will be updated.
+
+	Consider, you have given exit (2).  --> 010
+	Bits will be updated like below.
+		0000 0010 0000 0000  --> Decimal value of this binary is 512.
+
+	So, status will be filled as 512.
+
+2] Process terminated by kill:
+	Last 8 bits will be nocare (x).
+	Bit-8 will denote coredump flag. If coredump enabled means, it will be 1.
+
+	consider you killed the process with 9 signal. Ther is no coredump for SIG-9.
+	Bits will be updated like below.
+		0000 0000 0000 1001  --> Decimal value is 9.
+
+	So, status value will be 9.
+
+	consider signal-8 and coredump enabled for sig-8. In this case, bits will be
+		0000 0000 1000 1000  --> Decimal will be 137.
+			  |
+			  |
+			  |
+			Coredump flag enabled.
+	Status will be 137.
+
+
+Wait system call won't wait for the particular child process to terminate. 
+Assume, there are two child processes. Then, as soon as anyone of the child process terminated, the wait call will be unblocked and next set of lines will be executed.
+
+Waitpid system call:
+	By using waitpid system call, we can make the parent process to block until the particular child process got terminated.
+
+Header files: #include <sys/wait.h>
+
+Syntax: pid_t waitpid(pid_t pid, int *status, int options);
+	where,
+		pid represents child process id which needs to be terminated
+		status represents the info about child process termination.
+		options is set of flags. Usually, if we given 0 means, until child process exit, it'll be blocked.
+		Another option is WNOHANG, if you mention this option even if child process is still running, we won't block the parent process execution and follwing codes will be executed without any block.
+
+Return values:
+	In case of wait, returns child pid on success and -1 on failure.
+	In case of waitpid, returns child pid on success, -1 on failure and if option is WNOHANG and process present means returns 0.

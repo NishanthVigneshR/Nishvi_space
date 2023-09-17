@@ -23,7 +23,7 @@ Initially, all the memory segments data will be copied to child process memory.
 Data segments which is declared above fork call, will be holding same value. Once it updated, it'll differ and it won't reflect in abother process.
 
 Copy on write:
-	Now, we are duplicating entire page frames to child process. We can eliminate this by using copy on write feature.
+	Now, we are duplicating entire page frames to child process. We can eliminate this by using copy on write concept.
 	Both the parent and child process will use same virtual memory.
 	Only modified page frames will be copied to corresponding individual memory. This is known as copy-on-write.
 
