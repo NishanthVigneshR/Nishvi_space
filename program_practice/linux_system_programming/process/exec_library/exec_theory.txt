@@ -1,0 +1,23 @@
+Exec() family:
+	Exec() family system call will replace all the code below exec() call in current virtual memory with the code in the pathname.
+	(E.g):- Consider in p1.c main function, exec() call invoked with pathname of p2.c obj execution.
+		The entire main() function in p1.c will be replaced by p2.c main function.
+	But the pid will be smae.
+
+Syntax and Header:
+	#include <unistd.h>
+
+       extern char **environ;
+
+       int execl(const char *pathname, const char *arg, ...
+                       /*, (char *) NULL */);
+       int execlp(const char *file, const char *arg, ...
+                       /*, (char *) NULL */);
+       int execle(const char *pathname, const char *arg, ...
+                       /*, (char *) NULL, char *const envp[] */);
+       int execv(const char *pathname, char *const argv[]);
+       int execvp(const char *file, char *const argv[]);
+       int execvpe(const char *file, char *const argv[], char *const envp[]);
+
+Return value:
+	exec() family function returns only on failure case and return value will be -1.

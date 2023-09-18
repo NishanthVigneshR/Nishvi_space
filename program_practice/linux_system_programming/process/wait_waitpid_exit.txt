@@ -66,3 +66,12 @@ Syntax: pid_t waitpid(pid_t pid, int *status, int options);
 Return values:
 	In case of wait, returns child pid on success and -1 on failure.
 	In case of waitpid, returns child pid on success, -1 on failure and if option is WNOHANG and process present means returns 0.
+
+
+Orphan process:
+	Consider parent process got exited even before the termination of the child process. So, the parent of the child process won't be present. Thus, child process will become orphan process.
+	The parent process of the child process will be initialized as 1 (init process, since it'll parent all the orphan process).
+
+Zombie process:
+	Consider the child process exited soon and parent is still processing it's operations.
+	If we use wait() call, we can avoid this zombie process as it will take care of handling the processes correctly.
