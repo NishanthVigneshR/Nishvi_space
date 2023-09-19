@@ -1,0 +1,52 @@
+Signal:
+	Signals is the interrupt occurred during process running.
+	Signals is an unique number.
+	Each signal will have default handling for the respective signals.
+	Signals will be handled in the below ways.
+
+	1] Ignore the received signals, (except SIGKILL and SIGSTOP)
+	2] Catch  and handle the received signal per each process,
+	3] Default handling of the signal.
+
+Once the signal received, Kernel will store the signal. Then, it will deliver the signal to process and removes it from kernel.
+
+Header file : #include <signal.h>
+
+SIGKILL and SIGSTOP cannot be ignored.
+
+SIGINT - ctrl +c  --  Interrupt signal
+SIGKILL - when signal sent by using kill() system call.
+SIGCONT - Kernel sends this signal when the process needs to be resumed from the stopped state.
+SIGALRM - whenever alarm() call expires, this signal will be sent. setitimer() as well.
+SIGABRT - abort() function sends this signal
+SIGSEGV - segmentation fault in code.
+SIGBUS - memory access error
+SIGCHLD - whenever child terminated, it will send this signal to parent process.
+SIGPIPE - If the read end fd terminated, it will send this signal to write end fd process.
+
+SIGUSR1 and SIGUSR2 - These two are the special signals which will be never used by kernel. By using, these signals we can send 
+signals between different userspace processes.
+
+There are other signals as well.
+
+Signal() system call:
+==================
+Signal() call is used to register the handler for the received signal.
+Syntax : sighandler_t signal (int signo, sighandler_t handler_function);
+
+	If we want to ignore the signal, mention SIG_IGN,
+	If default operation must be carried out, mention SIG_DFL.
+
+Return Value :  Returns 0 on success.
+		Returns SIGERR  and positive number on failure.
+
+Kill() system call:
+==================
+kill() call is used to send signal from one process to another process.
+
+Header file :   #include <sys/types.h>
+		#include <signal.h>
+
+Syntax : int kill (pid_t pid, int signo);
+Return value : On success returns 0
+	       On failure returns -1 and errno will be set.
