@@ -1,0 +1,45 @@
+Condition Variable:
+	By using mutex, we can make the threads to execute in synchronized manner.
+	Threads will be handled one by one. That's fine, but we can't make the threads to handle in the manner we need.
+	
+	(E.g):- Assume two threads A and B. By using mutex, thread A and B will be handled one after another.
+		Both the threads won't be executed at the same time.
+		But, the order of execution can be either A after B (or) B after A.
+	It won't be in our control.
+
+By using condition variables, we can avoid this problem. We can make the order of thread execution as we wish.
+
+	(E.g):- Assume two threads A and B.
+		Consider you are expected to handle the threads in a way that pthread B should be executed only after pthread A.
+		By using condition variable we can achieve this. (i.e)., thread B will be handled only after thread A.
+
+By using condition variable, we can perform signaling from one thread to another thread.
+
+A conditon variable always used in conjunction with a mutex.
+
+Datatype : pthread_cond_t
+
+Condition variable will be initialized both static or dynamic.
+
+Initialization : pthread_cond_t cond_var = PTHREAD_COND_INITIALIZER;
+
+Condition variables will work on "signal and wait" approach.
+
+The thread which needs to be executed first will signal the another thread once the handling done.
+Another thread will be waiting for the signal.
+Once it got signal, it'll wake up and execute it's handling.
+
+Syntax:
+======
+	pthread_cond_signal(pthread_cond_t * cond);
+	pthread_cond_wait(pthread_cond_t * cond, pthread_mutex_t *mutex);
+
+pthread_cond_wait():
+	1] It will unlock the mutex
+	2] Then, it will lock the condition variable
+	3] It will wait for the signal to the condition variable.
+
+Return value:
+	O on success
+	positive error number on failure.
+

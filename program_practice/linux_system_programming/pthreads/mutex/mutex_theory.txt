@@ -1,0 +1,123 @@
+Mutex:
+	Mutual exclusion.
+
+	By using  pthread, we can create multiple pthreads in the process. Each pthreads will have unique thread ID. But, process ID will be same for all pthreads since it's running on top of same process.
+	The process in which threads created itself is an thread and it's known as main thread.
+	By using pthread_exit() call, we can terminate the pthreads.
+	But, if you use pthread_exit() in main thread, only main thread will be terminated. The pthreads created on that process won't be terminated and it'll be still executed.
+	If you use exit() or return call in the main thread means all other pthreads also will be terminated.
+
+	By using pthread_join(), we can make main thread to block the execution until the other pthread termination.
+
+	By using pthread_self(), we can fetch thread id of that pthread.
+
+	By using pthread_cancel(), we can mention the thread as an input parameter and that thread can be terminated even if
+execution is inprogress.
+
+	By using pthread_detach(), we can make the thread detach from the main thread. So, that mentioned thread will execute
+independently.
+
+	In pthread, we can create multiple threads and these threads can be executed in rendom manner or even all the threads can be executed in the same time.
+	So, if these threads sharing common parameter means we will end up in undefined behaviour and synchronize issues will occur.
+	(E.g):- In pthreads, apart from stack segment remaining segments will be common.
+		So, changing the value of global variable will reflect in other pthreads as well.
+		Consider, we are incrementing global variable in two thread handlers at the same time.
+		In this case, we will end up in undefined behaviour.
+
+MUTEX:
+	In order to address this sync issue, mutex comes as a rescue.
+	In the above example, incrementing that global variable is the critical section.
+	Mutex is the lock.
+	By using mutex,we can lock the critical section in such a way that critical section will be executed only once at a time
+.
+	(E.g):- Consider pthread A and B. Both are calling same thread handler at the same time.
+		Assume scheduler scheduled A first followd by B.
+		So, once pthread A enters the thread handler by using mutex we will lock the critical section.
+		Now assume pthread B will enter and will try to access critical section. But, it will be blocked since mutex is already locked by another thread pthread A.
+		Once pthread A completes it's handling, it'll unlock the mutex lock. Now, pthread B will get unblocked and it'll lock the mutex and will execute critical section. Once execution done, it will unlock the mutex.
+
+	pthread A				pthread B
+	   |					   |
+	   |					   |
+	   |					   |
+	Mutex lock				mutex lock (It will wait)
+	   |					   |
+	   |					   |
+	   |					   |
+	Handling the common resource		   |
+	   |					   |
+	   |					   |
+	   |					   |
+	unlock the mutex-------------------------- locks the mutex
+						   |
+						   |
+						   |
+						critical section
+						   |
+						   |
+						   |
+						Unlock the mutex
+
+
+Operation of the mutex:
+	1] Lock the mutex
+	2] Access the shared resource
+	3] Unlock the mutex
+
+A mutex can be allocated as static or dynamic.
+
+Static allocation : pthread_mutex_t mutex = PTHREAD_MUTEX_INITIALIZER;
+
+Datatype: pthread_mutex_t
+
+Syntax:
+	int pthread_mutex_lock(pthread_mutex_t *mutex);
+	int pthread_mutex_unlock(pthread_mutex_t *mutex);
+
+Return value: 0 on success
+	      Positive error number on failure
+
+There are two other variations of mutex lock:
+	1] int pthread mutex_trylock(pthread_mutex_t * mutex);
+		where, by using this call we won't block the flow. If the mentioned mutex is locked by another client in the mean time means, it will return EBUSY error number and move on.
+
+	2] int pthread_timedlock(pthread_mutex_t * mutex, int abstime);
+		where, we will block the flow until the expiration of the provided time. Once the time expires, it will check whether is that pthread becames the owner for that mutex. If yes, returns 0 and in viceversa case it'll return ETIMEDOUT error number.
+
+Deadlock:
+	Consider two pthreads A and B and two mutex a and b.
+
+	Pthread A        Pthread B
+	   |		    |
+	   |		    |
+	   |		    |
+	mutex A lock    mutex B lock
+	   |		    |
+	   |		    |
+	   |		    |
+	mutex B lock    mutex A lock
+
+	Here, pthread A will lock A mutex and pthread B will lock B mutex.
+	      Then, pthread A will try to lock B as well. In the same way, pthread B will try to lock A as well.
+	      But, the second lock of each thread is already locked by another threads.
+	So, the flow of execution will be blocked for indefinite time.
+	This is known as dead lock.
+
+	We can address this by following the below rule.
+	(i) Always lock the mutex in hierarical way.
+
+	 Pthread A        Pthread B
+           |                |
+           |                |
+           |                |
+        mutex A lock    mutex A lock
+           |                |
+           |                |
+           |                |
+        mutex B lock    mutex B lock
+
+	Handling like above will resolve the issue. 
+	Any one thread will lock the mutex A first.
+	Once it done, it'll lock the mutex B as well.
+	Once execution done, both the mutex will be unlocked.
+	Then, next thread will lock the mutex and perform the handling. Once done it will unlock the mutex locks.

@@ -1,0 +1,113 @@
+Pthreads (POSIX Thread):
+    
+    POSIX - Portable Operating System Interface.
+
+    Each process running on top of kernel will have individual virtual memory.
+    This virtual memory will be unique for each and every processes.
+    By using threads, we can create threads in the process.
+    Threads will be used to accomplish sub-tasks. Multiples threads will perform their sub-tasks and once
+    all the threads completes it's execution, we can group all of it together and accomplish main task.
+
+    The process in which threads are created itself is an thread and it will be main thread.
+
+    The main advantage of threads is unlike process all the threads in the process will share same virtual memory.
+
+    Text segment, Data segment and Heap segment will be common for all the threads in the process.
+    Stack segment alone will be provided invidually for each threads.
+
+            -----------------
+            main thread stack
+            ------------------
+            pthread-1 stack
+            ------------------
+            pthread-2 stack
+            ------------------
+            Heap segment
+            ------------------
+            Data segment
+            ------------------
+            Text segment
+            ------------------
+
+    Data in data segments and heap segments can be shared among all the threads.
+
+    All the Threads present in the process can be executed concurrently.
+
+    Pthreads created by dev should be as per POSIX standards.
+
+    All the threads will be identified by unique thread ID's within the process.
+
+    Process ID will be same across all the threads in the process.
+
+Header files : #include <pthread.h>
+
+During compliation, we should link pthread library.
+    i.e., gcc demo.c -lthread -o demo
+                     --------
+
+pthread_create() system call is used for creating new threads in the process.
+
+    Syntax: int pthread_create(pthread_t *thread, const pthread_attr_t * attr, 
+                void *(*start_routine) (void *), void *arg);
+
+    where,
+        thread represents the variable in which create thread id will be filled,
+        attr  represents attributes,
+        third variable is void functional pointer represents the handler function to handle the thread,
+        arg represents input arguments for the handler function.
+
+    Return Values:  Returns 0 on success
+                    Returns any positive number on failure.
+
+By using pthread_self() system call we can fetch thread_id of that specific thread.
+
+    Syntax: pthread_t pthread_self(void);
+
+pthread_exit() is the system call used for terminating that specific pthread.
+
+    Syntax: pthread_exit (void *ret);
+
+    where,
+        ret represents pointer in which the return value will be filled.
+
+    If main thread call pthread_exit(), only the main thread will be terminated. Our threads will still be running.
+    So, mostly main thread will be terminated by return or exit call.
+    If the main thread is teminated by return or exit, all the other threads in the process also will be terminated.
+
+Once we created thread, we won't have a control in sequential execution of threads.
+i.e., Consider we created three threads (t1, t2 and t3). It can execute in any random order (123 or 321 or 231 etc.,)
+Even the main thread can be closed even before completion of other threads.
+
+By using pthread_join() system call, we can avoid this and we can make the main thread to block the execution 
+until the completion of other threads execution.
+
+    Syntax: int pthread_join(pthread_t thread, void **retval);
+
+    pthread_join behaves just like waitpid().
+    pthread_join will block the main thread until the termination of the thread mentioned in parameter.
+
+    where,
+        thread represents thread which need to be terminated
+        retval represents the return value
+
+    Return Value: On success returns 0.
+                  On failure returns error number.
+
+pthread_cancel():
+    The thread provided as an input parameter for the pthread_cancel() will receive the cancellation request for
+    terminate itself.
+
+    Syntax: pthread_cancel(pthread_t thread);
+
+    Return Value: On success returns 0.
+                  On failure returns error number.
+pthread_detach();
+
+    Consider pthread_join() function is not used and main thread will be terminated first. Then, assume another thread 
+    will take some more time to complete it's execution. In the mean time, that thread will become zombie thread.
+
+    By using, pthread_detach() we can detach the not-joined thread from the main thread. So, even if main thread
+    terminated, this thread won't be dependent and it will become independent. Freeing the memory will be taken care
+    by kernel.
+
+    Syntax : pthread_detach(pthread_t thread);
