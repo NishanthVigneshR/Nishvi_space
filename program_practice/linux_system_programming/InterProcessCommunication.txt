@@ -1,0 +1,21 @@
+Inter Process Communication (IPC):
+
+	Communication between two or more processes is known as IPC.
+	By using IPC we can synchronize the processes.
+
+IPC is divided into two types.
+
+1] Communication based IPC
+	1] Data-transfer Based
+		Sockets,
+		PIPES,
+		FIFO and
+		message queue.
+
+	2] Memory Based
+		Shared memory
+
+2] Synchronize based IPC
+	mutex
+	condition variable
+	semapthore

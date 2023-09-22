@@ -1,0 +1,33 @@
+PIPES:
+	Pipes is an data-transfer (byter oriented) IPC concept.
+	In pipes there will two ends.
+		1] Write end
+		2] Read end
+
+	Pipes are unidirectional.
+	Pipes will store the data of limited capacity (Usually, 64K). This memory will be occupied from kernel.
+	If the memory is fully occupied means, write end will be blocked until the memory gets freed.
+	Pipes are used for transmitting data between parent and child process.
+	
+Header file : #include <unistd.h>
+
+Syntax: int pipe (int * fd);
+	As an input arguments, we need to provide two fd's.
+	One for reading end and another for write end.
+
+Return value :  Returns 0 on success
+		Returns -1 on failure.
+
+Pipes with fork();
+	Assume you created two fd's with pipe() call.
+	Then , you called fork() call.
+
+	Now, fd table will be duplicated and read end and write end will be present in virtual memory of both the processes.
+
+	But, assume you need to send data from child Process and parent process should just read the data.
+
+	In this case, we can close the write fd() of the parent process and read fd() of the child process.
+
+SIGPIPE:
+	SIGPIPE error will be thrown when the read end of the pipe got closed but still write end trying to send the data.
+	Write end process will receive SIGPIPE error.
