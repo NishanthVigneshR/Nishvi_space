@@ -1,0 +1,171 @@
+Message queues:
+
+	In pipe and FIFO, we will share the data between processes in byte-oriented form.
+	But, by using message queues we can share the data between processess in message form.
+
+	We can set the priority for each message at send and receive ends.
+
+	In message queues, the file will be created in /dev/mqueue folder.
+	While creating file in message queue, always we need to start file name with '/'.(i.e., /mqueue_demofile).
+
+	For compilation, we need to link real time library -lrt.
+
+	Attributes will be updated in below path.
+	/proc/sys/fs/mqueue/
+
+Header file :  #include <mqueue.h>
+
+Common system calls used in mqueue:
+
+1] mq_open():
+	This call is used for opening the message queue file.
+	Syntax:  mqd_t mq_open(const char *name, int oflag);
+       		 mqd_t mq_open(const char *name, int oflag, mode_t mode,
+                     struct mq_attr *attr);
+
+	where,
+	name represents file path to be opened or created
+	oflag represents mode of the file (O_RDONLY, O_WRONLY, O_RDWR, O_CREAT etc..,)
+	mode represents file permissions (only if you are creating the file)
+	attr represents the attributes for the given message queue file.
+
+	Parameters mode and attributes will be used only if we're creating the file (O_CREAT flag must).
+
+	If attr is mentioned as NULL, it will take default system allocating attributes.
+
+	Structure of attributes:
+	    struct mq_attr {
+               long mq_flags;       /* Flags (ignored for mq_open()) */
+               long mq_maxmsg;      /* Max. # of messages on queue */
+               long mq_msgsize;     /* Max. message size (bytes) */
+               long mq_curmsgs;     /* # of messages currently in queue
+                                       (ignored for mq_open()) */
+           };
+
+	In mq_open call, only maxmsg and msgsize can be initialized.
+
+Return Value:
+	Returns message queue descriptor on success,
+	Returns -1 on error.
+
+2] mq_close():
+	mq_close() call is used for closinf the mqueue descriptor.
+
+	Syntax : int mq_close (mqd_t mqdes);
+
+Return Value:
+	Returns 0 on success
+	Returns -1 on failure.
+
+3] mq_send():
+	mq_send() call is used for sending the data from one process to another.
+
+	Syntax: int mq_send (mqd_t mqdes, const char * buf, size_t len, insigned int priority);
+	where,
+		mqdes - descriptor
+		buf - buffer to be sent
+		len - size of the buffer to be sent
+		priority - priority for the message.
+
+Description content from man page:
+
+	mq_send() adds the message pointed to by msg_ptr to the message queue referred to by the message queue descriptor
+       mqdes.  The msg_len argument specifies the length of the message pointed to by msg_ptr; this length must be less than
+       or equal to the queue's mq_msgsize attribute.  Zero-length messages are allowed.
+
+       The msg_prio argument is a nonnegative integer that specifies the priority of this message.  Messages are placed on
+       the queue in decreasing order of priority, with newer messages of the same priority being placed after older messages
+       with the same priority.  See mq_overview(7) for details on the range for the message priority.
+
+       If the message queue is already full (i.e., the number of messages on the queue equals the queue's mq_maxmsg attri‐
+       bute), then, by default, mq_send() blocks until sufficient space becomes available to allow the message to be queued,
+       or until the call is interrupted by a signal handler.  If the O_NONBLOCK flag is enabled for the message queue de‐
+       scription, then the call instead fails immediately with the error EAGAIN.
+
+       mq_timedsend() behaves just like mq_send(), except that if the queue is full and the O_NONBLOCK flag is not enabled
+       for the message queue description, then abs_timeout points to a structure which specifies how long the call will
+       block.  This value is an absolute timeout in seconds and nanoseconds since the Epoch, 1970-01-01 00:00:00 +0000 (UTC),
+       specified in a timespec(3) structure.
+
+       If the message queue is full, and the timeout has already expired by the time of the call, mq_timedsend() returns im‐
+       mediately.
+
+Return value:
+	Returns 0 on success
+	Returns -1 on failure.
+
+mq_receive():
+	mq_receive() call is used for receiving the data via message queue.
+
+Syntax: int mq_receive(mqd_t mqdes, char * buf, size_t buf_len, unsigned int * priority);
+	where,
+	   mqdes - descriptor,
+	   buf - buffer to be filled with received data,
+	   buf_len - number of bytes to be copied,
+	   priority - received messages priority will be filled.
+
+Desciption in man page:
+	mq_receive() removes the oldest message with the highest priority from the message queue referred to by the message
+       queue descriptor mqdes, and places it in the buffer pointed to by msg_ptr.  The msg_len argument specifies the size of
+       the buffer pointed to by msg_ptr; this must be greater than or equal to the mq_msgsize attribute of the queue (see
+       mq_getattr(3)).  If msg_prio is not NULL, then the buffer to which it points is used to return the priority associated
+       with the received message.
+
+       If the queue is empty, then, by default, mq_receive() blocks until a message becomes available, or the call is inter‐
+       rupted by a signal handler.  If the O_NONBLOCK flag is enabled for the message queue description, then the call in‐
+       stead fails immediately with the error EAGAIN.
+
+       mq_timedreceive() behaves just like mq_receive(), except that if the queue is empty and the O_NONBLOCK flag is not en‐
+       abled for the message queue description, then abs_timeout points to a structure which specifies how long the call will
+       block.  This value is an absolute timeout in seconds and nanoseconds since the Epoch, 1970-01-01 00:00:00 +0000 (UTC),
+       specified in a timespec(3) structure.
+
+       If no message is available, and the timeout has already expired by the time of the call, mq_timedreceive() returns im‐
+       mediately.
+
+Return Value:
+	Returns number of bytes received on success
+	Returns -1 on failure.
+
+5] mq_unlink():
+	mq_unlink() call will delete the specified message queue name.
+
+	Syntax: mq_unlink (const char *name);
+
+	where,
+		name represents the message queue file.
+Return Value:
+	0 on success and -1 on failure.
+
+6] mq_setattr() / mq_getattr():
+
+DESCRIPTION in man page:
+       mq_getattr() and mq_setattr() respectively retrieve and modify attributes of the message queue referred to by the mes‐
+       sage queue descriptor mqdes.
+
+       mq_getattr() returns an mq_attr structure in the buffer pointed by attr.  This structure is defined as:
+
+           struct mq_attr {
+               long mq_flags;       /* Flags: 0 or O_NONBLOCK */
+               long mq_maxmsg;      /* Max. # of messages on queue */   
+               long mq_msgsize;     /* Max. message size (bytes) */     
+               long mq_curmsgs;     /* # of messages currently in queue */
+           };
+
+       The mq_flags field contains flags associated with the open message queue description.  This field is initialized  when
+       the queue is created by mq_open(3).  The only flag that can appear in this field is O_NONBLOCK.
+
+       The  mq_maxmsg  and mq_msgsize fields are set when the message queue is created by mq_open(3).  The mq_maxmsg field is
+       an upper limit on the number of messages that may be placed on the queue using mq_send(3).  The mq_msgsize field is an
+       upper  limit  on the size of messages that may be placed on the queue.  Both of these fields must have a value greater
+       than zero.  Two /proc files that place ceilings on the values for these fields are described in mq_overview(7).
+
+       The mq_curmsgs field returns the number of messages currently held in the queue.
+
+       mq_setattr() sets message queue attributes using information supplied in the mq_attr structure pointed to by  newattr.
+       The  only  attribute  that  can  be  modified  is the setting of the O_NONBLOCK flag in mq_flags.  The other fields in
+       newattr are ignored.  If the oldattr field is not NULL, then the buffer that it points to is used to return an mq_attr
+       structure that contains the same information that is returned by mq_getattr().
+
+RETURN VALUE
+       On success mq_getattr() and mq_setattr() return 0; on error, -1 is returned, with errno set to indicate the error.

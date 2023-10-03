@@ -5,6 +5,8 @@ FIFO:
 
 	By using FIFO, we can share the common file between two processes.
 
+	pipe will be created but it will allocated with name in FIFO and it's known as namedpipe. (Read below description)
+
 	Pipes are used for communication between related processes (parent-child process).
 	But, by using FIFO we can communicate between non-related processes.
 

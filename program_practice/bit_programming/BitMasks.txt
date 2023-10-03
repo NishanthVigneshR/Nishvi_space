@@ -1,0 +1,31 @@
+Bitmasks:
+
+	Bit masks is the series of bits with the value 0 and 1.
+	Bit masks will be combined with bitwise operators and we can manipulate the data in the bits.
+
+	By using bitwise OR we can set the bits in the variable.
+	By using bitwise AND we can fetch the value in the particular bit and we can reset the bit value.
+	By using bitwise XOR we can toggle the value of the bit.
+
+	(E.g) :- Performing bitwise AND operation between received IP address with subnet mask
+		 In this, subnet value will be masked with IP address and we can find network ID.
+
+	    IP   : 192.168.1.254
+	    Mask : 255.255.255.0
+
+	(IP & Mask) = (192.168.1.254) & (11111111 11111111 11111111 00000000) = 192.168.1.0 is the network ID.
+
+	    By performing bitwise OR between network ID and complement of the mask, we can fetch broadcast address.
+
+	Bitwise XOR is used for toggling, swapping two variables, encryption etc..,
+
+	(E.g):- Toggling example:
+
+		Assume each n every time when the line getting executed, we should toggle the value.
+
+	Consider bit 0. I'll perform XOR b/w bit value and 1.
+
+	So, if the bit value is 0 means it will set as 1 ( 0 ^ 1 = 1)
+	Or else, if the bit value is 1 means it will set as 0 ( 1 ^ 1 = 0)
+
+	By doing this, bit value will be toggled every time when the code got executed.

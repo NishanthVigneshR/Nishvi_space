@@ -1,0 +1,56 @@
+Packing data:
+	We can pack various data in bits.
+	By packing data with bits, we can eliminate wastage of memory.
+
+For example,
+	consider if you need five flags, one 8-bit value (0-255) and one 16-bit value.
+
+	In general, we will use 5 integers and total memory allocated is 5 * 32 =  160.
+
+	Three flags f1, f2 .. f5 will be either 1 or 0. So, only one bit will be used. So, 3*31 = 93 bits will be wasted.
+	in case of 8 bit number, 24 bits will be wasted and 16 bits will be wasted for 16-bit number.
+
+	In total, only 29 bits needed and 131 bits are wasted.
+
+	These 29 bits we can store it in single int itself (32 bits).
+
+	These kind of packing will be known as data packing.
+
+We can do this two ways.
+
+	1] packing in Bits and
+	2] packing in fields.
+
+Bit packing:
+============
+	In case of bits packing, we arbitarily should assume the bits for each variable.
+	Like, in 32 bits.
+		Assume bit-28 as f1,
+		Assume bit-27 as f2,
+		Assume bit-26 as f3,
+		... bit-24
+		Assume bit-23 to bit-16 for 8-bit number,
+		Assume bit-16 to bit-0 for 16 bit number.
+
+	By using bitwise operators, we can set, get,toggle, clear the data in the bit.
+
+Field packing:
+=============
+	In case of fields packing, we can use the structure and we can separate the datatype into multiple params in bit level.
+	we will use special syntax in the structure definition.
+
+	In special syntax, by using ':' symbol we can specify the memeber name and allocated bit size.
+	We can perform padding of the unused bits.
+
+	(For eg) :- struct param {
+			unsigned int :5;  //no member name, so, this is padding. Indicates 5 bits unused.
+			unsigned int f1:1; //f1 is the flag member with 1 bit.
+			unsigned int type:8; //Type is the member with 8 bits.
+			unsigned int num:16; //num is 16 bit member.
+
+			char a;
+			int a;
+		    };
+
+	We can's define the array of this special members.
+	Just like normal structure access, we can use '.' or '->' for accessing structure members.

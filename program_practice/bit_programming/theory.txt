@@ -1,0 +1,81 @@
+Bitwise programming:
+
+	Bit is the smallest unit in computer memory.
+	It's either 0 or 1. 
+	System communicates by using only bits.
+
+Consider binary number - 01101001 and it's equivalent decimal is 105.
+
+	1*1 	= 1
+	0*2	= 0
+	0*4	= 0
+	1*8	= 8
+	0*16	= 0
+	1*32	= 32
+	1*64	= 64
+	0*128	= 0
+
+		----
+		 105
+
+1 byte is equal to 8 bits.
+rightmost bit is LSB and leftmost bit is MSB.
+
+If the bit is 1, it's termed as turned on.
+If the bit is 0, it's termed as turned off.
+
+Initializing bit to 1 known as setting the bit.
+Initializing bit to 0 known as resetting the bit.
+
+Consider the value with 8 bits.
+	If it's unsigned means, all 8 bits will be considered and subsequent action will be taken.
+	   (e.g):- 11111111 --> Consider this is unsigned.
+		If we convert this binary to number, the number will be 255.
+
+	If the provided binary is signed means, left most bit will be considered as sign bit.
+	    If left most bit is '0' means, the number is positive
+	    If the bit is '1' means, the number is negative.
+
+	   (E.g):- Consider 01111111 --> 0 means it's positive number. Thus, the number is 128.
+		   Consider 11111111 --> If it's unsigned it's 255. But, since it's signed number.
+					 MSB 1 means negative number.
+
+		   1 * 1	= 1
+		   1 * 2	= 2
+		   1 * 4	= 4
+		   1 * 8	= 8
+		   1 * 16	= 16
+		   1 * 32	= 32
+		   1 * 64	= 64
+		   1 ----> represents negative number
+				-----
+				128 - 1 = 127. ==> -127.
+
+Converting the negative decimal to binary and binary to decimal will be different than normal conversion.
+2's complement will be used for negative number conversion.
+
+Steps to convert negative decimal to binary.
+    1] Add 1 to the value
+    2] Express the absolute value in binary
+    3] Complement all the bits.
+
+Consider negative decimal (-10) to binary.
+	1] -10 +1 = -9
+	2] abs (-9) = 9 = 0000 1001
+	3] (9)' = 1111 0110
+
+	Thus, the binary number of -10 is 1111 0110.
+
+Steps to convert binary to negative number:
+    1] Complement all the bits
+    2] Convert the result to decimal
+    3] change the sign  of the result
+    4] subtract 1.
+
+Consider binary 1111 0110
+	1] complement = 0000 1001
+	2] convert to decimal = 9
+	3] change the sign = -9.
+	4] Subtract -1 = -9 - 1 = -10.
+
+	Thusm the decimal equivalent for 1111 0110 is -10.

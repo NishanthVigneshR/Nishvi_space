@@ -1,0 +1,27 @@
+Bitwise shifting Operators:
+	In C, there are two bitwise operators.
+	Left shift operator (<<) and
+	Right shift operator (>>).
+
+	In left shift operator, the vacated bits will be allocated as 0.
+	In right shift operator, the vacated bits will be allocated as 0, if it's unsigned variable.
+				 the vacated bit will be allocated with sign bit value, if it's signed variable.
+
+Left shift operator:
+	Example for left shift operator : Assume a = 5;
+
+		(a << 1) = ((0000 0101) << (1)) = (0000 1010) = 10
+		(a << 2) = ((0000 0101) << (2)) = (0001 0100) = 20
+		(a << 3) = ((0000 0101) << (3)) = (0010 1000) = 40
+		(a << 4) = ((0000 0101) << (4)) = (0101 0000) = 80
+
+	If you see the pattern, the output will be a = a * 2^n.
+	(ie., 5 * 2^1 = 10 ; 5 * 2^2 = 20 ; 5 * 2^3 = 40 ; 5 * 2^4 = 80 ....)
+
+Right shift operator:
+	unsigned a = 20;
+	(a >> 1) = ((0001 0100) >> 1) = (0000 1010) = 10
+	(a >> 2) = ((0001 0100) >> 2) = (0000 0101) = 5
+	(a >> 3) = ((0001 0100) >> 3) = (0000 0010) = 2
+
+	If you see the pattern, the output will be a = a / 2^n.
