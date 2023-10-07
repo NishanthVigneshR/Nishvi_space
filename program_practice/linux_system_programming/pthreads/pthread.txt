@@ -13,7 +13,7 @@ Pthreads (POSIX Thread):
     The main advantage of threads is unlike process all the threads in the process will share same virtual memory.
 
     Text segment, Data segment and Heap segment will be common for all the threads in the process.
-    Stack segment alone will be provided invidually for each threads.
+    Stack segment alone will be provided individually for each threads.
 
             -----------------
             main thread stack

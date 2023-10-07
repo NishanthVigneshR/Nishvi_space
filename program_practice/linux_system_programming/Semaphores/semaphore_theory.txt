@@ -1,0 +1,127 @@
+Semaphores:
+
+	Semaphores are used to synchronize the processes.
+	We can avoid race condition and critical section will be invoked in atomic manner.
+
+	Mutex and condition variables are other synchronize IPC concepts and it's used mainly for pthreads.
+	Semaphore will work based on the value it's holding.
+	System call will wait until the semaphore value becomes 0. Once it becomes, it'll start executing the critical section.
+
+	Semaphore is the integer. We can increment (or) decrement the integer.
+	Based on it's value, if the value is equal to 0 the flow will be blocked until it's incremented.
+	If the value is more than 0, then the flow won't be blocked and the value will be decremented.
+
+	There are two types of semaphores.
+	    (1) Named semaphore,
+	    (2) Unnamed semaphore.
+
+	Need to link the compilation with -lpthread.
+
+Header file : #include <semaphore.h>
+
+Named semaphore:
+===============
+	Created semaphore file will be placed in "/dev/shm" path.
+	Semaphore name should always start with '/'.
+
+System calls:
+
+sem_open():
+        sem_open() system call is used to create and open the existing semaphore.
+
+	Syntax : sem_t sem_open (const char * filename, int oflags, mode_t mode, unsigned int value);
+	Based on the oflag, last two parameters will come into play.
+
+	where.
+		filename represents semaphore to be created (or) opened in /dev/shm path.
+		oflags represents the flags (O_RDONLY, O_WRONLY, O_RDWR, O_CREAT).
+		mode_t represents the permissions for the file to be created.
+		value represents the default value to be assigned for the semaphore.
+
+	Return values: Returns semaphore address on success and SEM_FAILED error on failure.
+
+sem_close():
+	sem_close() will close the semaphore opened in that particular process and free the memory.
+
+	Syntax: int sem_close (sem_t * sem);
+	where,
+		sem represents the address of the opened semaphore.
+
+	Return value: 0 on success and -1 on failure.
+
+sem_post():
+	sem_post() call will increment the value present in the semaphore.
+	Which inturn, make the wait() call to unblock and execute it's operations.
+
+	Syntax: int sem_post(sem_t * sem);
+
+	Return : 0 on success and -1 on failure.
+
+sem_wait():
+	sem_wait() call will decrement the value present in the semaphore.
+
+	If the value is equal to 0, sem_wait() will block the call until the semaphore gets incremented.
+	Once the semaphore gets incremented, sem_wait() will decrement the semaphore value and unblocks the call.
+
+	Syntax: int sem_wait (sem_t * sem);
+
+	Return : 0 on success and -1 on failure.
+
+sem_getvalue():
+	sem_getvalue() fetches the current value held by the semaphore.
+
+	If  one  or  more processes or threads are blocked waiting to lock the semaphore with sem_wait(3), POSIX.1 permits two
+        possibilities for the value returned in sval: either 0 is returned; or a negative number whose absolute value  is  the
+        count of the number of processes and threads currently blocked in sem_wait(3).  Linux adopts the former behavior.
+
+	Syntax: int sem_getvalue (sem_t * sem, int * sem_val);
+
+	where,
+		sem represents semaphore
+		sem_val represents the pointer in which the semaphore current value needs to be filled.
+
+	Return : 0 on success and -1 on failure.
+
+sem_unlink():
+	sem_unlink() call is used to remove the semaphore from the system. It will wait all the dependent processes to terminate it's execution. Once it done, it will remove the semaphore.
+
+	Syntax: int sem_unlink (const char * name);
+
+	Return: 0 on success, -1 on failure.
+
+Unnamed semaphore:
+=================
+	In case of named semaphore, semaphore will be created in file system. Further actions, we can carry out by accessing that file.
+	But, in case of unnamed semaphore, semaphore will be created in memory.
+	Similiar to mutex and condition variables, we can synchronize the handling of pthreads within a process by using unnamed semaphore.
+	The advantage of unnamed semaphore over other two is, we can define the semaphore in common file and we can synchronize the threads of multiple processes by using unnamed semaphore.
+
+	Similiar to named semaphore, most of the system calls are same except sem_open() and sem_close().
+	sem_unlink() is not needed.
+
+	Instead of sem_open(), we need to use sem_init() and semaphore should be global/common.
+	Instead of sem_close(), we need to use sem_destroy().
+
+sem_init():
+	sem_init() call is used to create the unnamed semaphore.
+
+	Syntax: int sem_init(sem_t * sem, int pshared, unsigned int val);
+
+	where,
+	    sem represents the pointer in which the generated semaphore base address will be filled.
+	    pshared represents the integer (0 or 1).
+		1] If pshared is 0 means, the semaphore created is about to be shared within same process.
+		2] If pshared is 1 means, the semaphore created will be shared across different processes.
+	    val represents the default value about to be provided to semaphore. (As a better practice, always use 1. So, that synchronization will be more accurate).
+
+	second argument 'pshared' plays an important role.
+	Semaphore should be in shared memory area if we need to synchronize different process threads..
+
+	Return : -1 on error and 0 on success.
+
+sem_destroy():
+	sem_destoy() call is used for freeing up the memory allocated by sem_init().
+	Destroying the semaphore declared in some other process causes undefined behaviour.
+
+	Syntax: int sem_destroy(sem_t * sem);
+	Return : 0 on success and -1 on failure.
