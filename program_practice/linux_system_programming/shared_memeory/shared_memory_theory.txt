@@ -1,0 +1,10 @@
+Shared memory:
+	Shared memory is the fastest IPC concept.
+	In shared memory, we can share the single physical memory paging of the system among different processes.
+
+	In this way, all the required processes will be sharing the same main memory paging.
+	So, if we update the data in one process , it will reflect directly in main memory.
+	So, other processes when they are fetching they will get latest value.
+
+	(Eg)., Modifying database object in tr side, will reflect in gui and nsh side as well.
+		Here, sdb objects are shared.
