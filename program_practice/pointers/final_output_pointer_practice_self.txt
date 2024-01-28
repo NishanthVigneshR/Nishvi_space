@@ -1,26 +1,30 @@
 Value at address stored by ptr1 : 10
 Value of var1 after changing at ptr: 11
-Address stored by ptr: 889b11b4 2291863988
-Address of ptr1: 889b11a8
+Address stored by ptr: a37a2a5c 2742692444
+Address of ptr1: a37a2a50
 size of pointer : 8
 Increment :12 12
+value - 13 13
 Decrement : 11 13
-Address of array1 : 889b1180
+Address of array1 : a37a2a30
 Value at array1 - 1 and 1st index of array - 1. Both will be same
-Address of ptr2 - 889b1178 , address at ptr2 - 889b1180
+Address of ptr2 - a37a2a28 , address at ptr2 - a37a2a30
 -4 9 5
-Address of ptr2 - 889b1178 , address at ptr2 - 889b118c
+Address of ptr2 - a37a2a28 , address at ptr2 - a37a2a3c
 After addition : Value at ptr2 - 7
-Address of ptr2 - 889b1178 , address at ptr2 - 889b1184
+Address of ptr2 - a37a2a28 , address at ptr2 - a37a2a34
 After subtraction : Value at ptr2 - 3
 Increment : 7 6 6 5
-Address at ptr4 - 889b118c, Address ar ptr3 - 889b1180. Performing subtraction b/w two pointers
+Address at ptr4 - a37a2a3c, Address ar ptr3 - a37a2a30. Performing subtraction b/w two pointers
 After subtraction, diff is 3
 int value stored at void ptr is 5
 float value stored at void ptr is 11.100000
 char value stored at void ptr is a
-Dynamically allocated memory for ptr5 and address is 44f6b0, value is 4
-Address of sint_ptr- 889b1160 , address at sint_ptr- 889b1168, value at sint_ptr- 10
-Address of dint_ptr- 889b1158, Address at dint_ptr- 889b1160, value at dint_ptr- 10
-Address of const_ptr - 889b1148, address at const_ptr - 889b1154, value at const_ptr - 3
-Address of ptr7 - 889b1130, address at ptr7 - 889b113c, value at ptr7 - 2
+Address of null ptr - a37a2a10 and address at null ptr - 0
+Dynamically allocated memory for ptr5 and address is 1c882b0, value is 4
+Freed ptr5 and trying to dereference it, address is 1c882b0, value is 7304
+Address of sint_ptr- a37a2a00 , address at sint_ptr- a37a2a0c, value at sint_ptr- 10
+Address of dint_ptr- a37a29f8, Address at dint_ptr- a37a2a00, value at dint_ptr- 10
+Address of const_ptr - a37a29e8, address at const_ptr - a37a29f4, value at const_ptr - 3
+ (Assigned ptr with new mem) Address of const_ptr - a37a29e8, address at const_ptr - a37a29e4, value at const_ptr - 400
+Address of ptr7 - a37a29d0, address at ptr7 - a37a29d8, value at ptr7 - 2

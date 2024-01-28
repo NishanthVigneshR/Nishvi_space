@@ -24,6 +24,13 @@ int main() {
 	printf("Increment :%d %d\n", (*ptr1)++, ++(*ptr1)); //We'll fetch value at memory hold by pointer ptr. 
 							    //Then we'll increment. Output will be 12 12.
 
+	/* Bit confused here and understood, compiler will compile the command from
+	 * right to left. So, 2nd arg will be executed first followed by 1st.
+	 *
+	 * (O.P) :- value - 13 13
+	 */
+	printf("value - %d %d\n", (*ptr1), var1);
+
 	printf("Decrement : %d %d\n", --(*ptr1), (*ptr1)--);   //We'll fetch value first and we'll decrement. 
 							       //Output will be 11 13.
 	
@@ -127,6 +134,8 @@ NULL_pointer:
 	 */
 	 int * ptrr = NULL; //if you dereference it'll be *(NULL) --> *(0) i,e. 0 is special memory address
 
+	 printf("Address of null ptr - %x and address at null ptr - %x\n", &ptrr, ptrr);
+	 /* Output : Address of null ptr - e1d388f0 and address at null ptr - 0 */
 	 // All the pointers initialized with NULL, points to memory address 0.
 	
 Wild_pointer:
@@ -154,7 +163,7 @@ Dangling_pointer:
 	 *	    Freed ptr5 and trying to dereference it, address is 21b96b0, value is 8633
 	 */
 
-	//printf("Freed ptr5 and trying to dereference it, address is %x, value is %d\n", ptr5, *ptr5);
+	printf("Freed ptr5 and trying to dereference it, address is %x, value is %d\n", ptr5, *ptr5);
 	
 	// This kind of pointers are known as dangling pointer. Like this, function return and local scope initialization also	      // will leads to dangling pointer.
 	
@@ -207,6 +216,13 @@ Pointer_to_constant:
 	 *  197 |         (*ptr6)++;
 	 */
 
+	/* Let's make the pointer to point to different memory, it'll work */
+	int chk1 = 400;
+	ptr6 = &chk1;
+
+	printf(" (Assigned ptr with new mem) Address of const_ptr - %x, address at const_ptr - %x, value at const_ptr - %d\n",
+                        &ptr6, ptr6, *ptr6);
+
 Constant_pointer:
 	/* Now, we need to initialize the pointer which will store fixed memory location.
 	 * The address stored by that pointer can't be modified (or) changed. But, we can modify the value present
@@ -221,7 +237,8 @@ Constant_pointer:
 	printf("Address of ptr7 - %x, address at ptr7 - %x, value at ptr7 - %d\n", &ptr7, ptr7, *ptr7);
 	
 	//*ptr7++;
-	/* Above line will throw below error.
+	/* Above line will throw below error. Becz, ptr7 is destined to point to array2 (1st address of an array)
+	 * since we made it const. So, we can't make the pointer to point to array2[1] or [2] so on.
 	 * pointer_practice_self.c:219:14: error: increment of read-only variable ‘ptr7’
 	 *  219 |         *ptr7++;
 	 */
