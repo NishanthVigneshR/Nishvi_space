@@ -1,0 +1,35 @@
+DHCP Snooping:
+	DHCP Snooping helps us in establishing more secure connection.
+	Ports will be classified as Uplink and Downlink ports.
+
+	If the client connected to the corresponding port assumed to be trustable one, the port will be configured as Uplink and the packets received in that port won't be examined.
+	Consider eth0 as WAN interface and the device believes we can trust the link. In this case, this port will be uplink and trustable one.
+
+	Consider the device consists of multiple LAN ports and access points. There is a chance that some hacker can loop in and can send some packet.
+	Assume PC1 is connecting to our device and dhcp server process is running in this PC1.
+	Consider if some client is sending discover and DHCP Offer will be sent by both the actual server and this unwanted PC1.
+	Here, if the client is accepting PC1 Discover and establishes the connection with PC1 means, security will be preached and connection and associate network will become vulnerable.
+
+	So, we can avoid this by making the PC1 (LAN connections) as downlink and the packet will be examined everytime.
+
+	We can filter in such a way that LAN connected ports should send only Discover, Request, Release and Decline Packets.
+	If the packet received from LAN is Offer (or) Ack (or) NAK, the packet should be discarded.
+
+Starvation:
+	Consider one suspicious LAN client is connected and he is sending multiple DHCP Discover packet and consumes all the available IP address. Server won't have any free IP address and server will respond DIscover request with NAK responses.
+
+	By comparing Device Hardware header (Inside DHCP packet) with L2 source MAC we can avoid starvation.
+
+DHCP Poisoning:
+	Above mentioned PC1 example is DHCP poisoning.
+
+//////////////////////****** GeeksforGeeks content ***************//////////
+
+DHCP snooping : DHCP snooping is done on switches that connects end devices to prevent DHCP based attack. Basically DHCP snooping divides interfaces of switch into two parts
+
+Trusted Ports – All the ports which connects management controlled devices like switches, routers, servers etc are made trusted ports.
+Untrusted Ports – All the ports that connect end devices like PC, Laptops, Access points etc are made untrusted port.
+
+DHCP snooping function keeps record of leased address to user in DHCP Binding Table. This table contains record of interface, VLAN, MAC-address to which IP address is leased. This checks problem of identity theft in LAN.
+DHCP snooping can also be configured to limit number of request arriving any interface.
+This helps in preventing DOS attacks that can consume entire address space or overload DHCP server.

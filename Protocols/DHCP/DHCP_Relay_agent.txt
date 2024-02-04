@@ -1,0 +1,24 @@
+A router/RG can act as either Server, Client or Relay Agent.
+
+Consider, router is getting IP address from it's Gateway and one client is connected to this router.
+
+If the client needs IP address, it will send broadcast DHCP Discover packet to the router.
+Router will receive the packet and it will send the packet to it's default gateway in unicast manner.
+Router's gateway will response back with DHCP Offer and router will receive it.
+Then Router will forward this Offer packet to the client.
+
+What if the server is present in a different network? Here comes the role of DHCP relay agent.
+
+In the same manner DHCP Request and DHCP ACK will be carried out. Router will behave as a DHCP Relay Agent here.
+
+
+	192.168.1.20		192.168.1.26
+	[Server]		[Router]		[Client]
+
+					<---------------- DHCP Discover (0.0.0.0 - 255.255.255.255)
+		<------------- (1.26 to 1.20) Discover
+	(1.20 to 1.26 -------->		----------------> DHCP Offer (Broadcast or Unicast, based on bootp)
+	 Offers 1.30 to client)
+		(In the same way, DHCP Request and DHCP ACK will be carried out).
+
+READ HERE: https://www.geeksforgeeks.org/dhcp-relay-agent-in-computer-network

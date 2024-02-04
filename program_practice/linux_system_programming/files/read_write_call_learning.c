@@ -9,7 +9,8 @@ int main() {
 	int read_ret = 0;
 	char read_buf[30] = {0};
 	char buf[] = "Hello Buddy ! All the best";
-	open_fd = open("demofile2", O_WRONLY | O_CREAT | O_EXCL, 0777);
+	//open_fd = open("demofile2", O_WRONLY | O_CREAT | O_EXCL, 0777);
+	open_fd = open("demofile2", O_RDWR | O_CREAT | O_EXCL, 0777);
 	if (open_fd < 0) {
 		printf("opening the file failed\n");
 		return 0;
@@ -69,6 +70,28 @@ int main() {
 	 * When I use O_RDWR flag, read system call also not working as expected.
 	 * But, with O_RDONLY flag, read system call works fine. Need to check it.
 	 */
+
+	int ret = lseek (open_fd, 0, SEEK_SET);
+	printf("Read failed, so seeking the file to beginning n lseek ret - %d\n", ret);
+
+	read_ret =  read(open_fd, read_buf, 15);
+	if (read_ret == -1) {
+		 printf("read system call failed and got below error\n");
+                 perror("Error : ");
+                 //return 0;
+	}
+	printf("[After seek] Read %d bytes of data and read_data is %s\n", read_ret, read_buf);
+
+	/* Output:
+	 * [root@localhost files]# ./a.out
+	 * File opened successfully and it's fd : 3
+	 * Successfully written 32 bytes of data to the file
+	 * Successfully written 15 bytes of data to the file
+	 * Read 0 bytes of data and read_data is
+	 * Read failed, so seeking the file to beginning n lseek ret - 0
+	 * [After seek] Read 15 bytes of data and read_data is hello dude ! al
+	 */
+
 
 	/* I have used O_EXCL flag in open call. Now, the file can be edited only first time.
 	 * If we try to edit second time, we will get error. 

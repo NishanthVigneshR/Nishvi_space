@@ -1,0 +1,82 @@
+DHCP:
+
+	Dynamic Host Configuration Protocol
+
+	DHCP server port number - 67
+	DHCP client port number - 68
+
+	Due to IPv4 starvation, allocating IPv4 address statically (Permanent) to each device will results in shortage of IP address.
+	Consider, you provided one permanent address(fixed) to one of your client and this client is in non-working state.
+	Since, we assigned fixed address, we can't assign this IP address to other devices and we'll lost it forever.
+
+	So, alloating IP address dynamically to connecting devices will help us retain the IP address even after the connected device becomes non-working.
+	DHCP helps us to achieve this.
+	Even along with IP address, Default gateway IP address, subnet mask, DNS server and Lease time information will be obtained by client. (May be I missed few more, plse chk it).
+
+	DORA is the important and basic process in DHCPv4 protocol.
+		DHCP Discover
+		DHCP Offer
+		DHCP Request
+		DHCP Acknowledgement
+
+DHCP Discover:
+	As a client, I should have IP address inorder to communicate with Internet.
+	Our ISP will act as DHCP server and will IP to us.
+
+	Client will send DHCP Discover in broadcast manner (255.255.255.255 and ff:ff:ff:ff:ff:ff) and all the locally reachable interfaces will receive this packet.
+	In this Discover packet, client can mention it's preferred IP address and if it's available we will get that IP address (or) we will get new IP address (It's upto server).
+	In this packet, under bootp flags header, we can mention whether we need reply in the form of unicast (or) Broadcast.
+
+		0x0000 - Unicast
+		0x8000 - Broadcast.
+
+DHCP Offer:
+	Once DHCP server receives the Discover packet, if the preferred IP address is available it'll be offered to client. If not, the new IP address will be offered to client.
+	Based on the Discover packet bootp flags value, server will determine whether the transaction should be unicast or broadcast.
+	Default gateway, DNS server, subnet mask and lease information (as part of Options) also will be provided as part of this packet to the client.
+
+DHCP Request:
+	Purpose of this packet is letting the server know that we are willing to use the offered IP address.
+	Client will accept the offer packet and will send broadcast DHCP request back to the server.
+	If we receive multiple Offers from different servers, mostly the first offer will be considered and used.
+	In DHCP Request packet, we will specify default gateway specifier (DHCP options) and DHCP Request packet will be transmitted.
+
+DHCP Acknowledgement:
+	Once server receives the Request packet, it will send DHCP ACK packet and will let the client to use the requested IP address.
+	Lease time, DNS server, Default gateway and subnet mask information also will be shared to client. (These details will be appended as part of DHCP options).
+	Even this can be either unicast or broadcast (based on bootp flag).
+
+Now, in day-to-day life not even a day will cross without accessing internet. So, getting new IP address each and everytime will results more backend work.
+	Lease time will help us here and avoid frequent IP allocation.
+
+Lease time is the value which will be assigned by server to client and the client can hold the IP address until the lease time expiration.
+	Renewal time (t1) - 50% of Leasetime
+	Rebind time (t2)  - 87.5% of Leasetime.
+
+Renewal time:
+	Once the client reaches T1, it will request the server to renew it's IP address. (i.e., DHCP request packet will be transmitted to corresponding default gateway (Unicast) and it will request the Server to renew it's IP address).
+	If the server is UP, it will respond back with DHCP ACK and the client will resets it's expiration time and it can hold the IP address for lease time.
+	In this way, client can keep on renewing the IP address and can hold the same IP address until both the server and client is UP.
+
+	If the client couldn't able to receive DHCP ACK from the server within Rebind time, then the client will get to know that the current default gateway is not UP and we will move to Rebind time
+
+Rebind Time:
+	If the client couldn't able to renew the IP address within rebind time, as soon as client reaches rebind time, DHCP Request packet will be transmitted in Broadcast manner and preferred IP address will be mentioned in that packet.
+	It implies, as a client I'm holding x.x.x.x IP address as of now and my server is not responding back to me.
+	If there is any other DHCP server present and the preferred IP address is free means, please assign it to me.
+
+	If the DHCP server holding that IP address free means, it'll reply with DHCP ACK with new gateway and client will continue to use the same IP address.
+
+	If the client couldn't able to receive DHCP ACK and lease time is expired means, client will release the IP address and will start new DORA process.
+
+DHCP Decline:
+	Consider you have received multiple Offers from multiple DHCP server as a response for DHCP Discover.
+	For the received DHCP Offers, client will respond back with only one DHCP Request. What about remainind DHCP Offer??
+
+	Once this DORA is over and client got IP address, client will respond back with DHCP Decline for all other DHCP OFFER packets and will server will reply with DHCP NAK/ACK (check it).
+
+DHCP Release:
+	If the client doesn't need the IP address anymore means, client will send DHCP Release packet to the server and will release the IP address.
+
+DHCP NAK:
+	If the server couldn't able to provide the received IP address, it will response with NAK message.
