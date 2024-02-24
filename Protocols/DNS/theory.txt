@@ -1,0 +1,59 @@
+DNS - Domain Name System
+
+DNS is used to fetch the IP address for the corresponding Domain name.
+As a human, we can remember domain names better than IP address. But, network devices only understands bits (0's n 1's).
+DNS comes as a bridge b/w domain name and IP address and maps it accordingly.
+
+DNS Query and DNS Reply are the two message types.
+
+Frequently searched domain names IP address will be stored locally in DNS cache of the particular end device or first hop DNS server.
+Next Hop DNS server information will be read by the end device dynamically as part of DHCP DORA process. (Even we can configure it statically).
+
+
+Let's consider I'm trying to access "customer.support.microsoft.com" and it's DNS Mapping isn't present in both FH DNS server and end device.
+
+As a first step, end device will check it's local DNS cache and will look for the entry in the DNS table.
+If the entry is not found, then the end device will transmit DNS Query packet to Firsthop DNS server.
+	(i) If the entry is present in FH server, it'll send DNS Reply back to the end device. This IP will be used in L3 Routing and communication will be established.
+
+	(ii) If the First Hop DNS server doesn't have the information about the requested domain name, the DNS Query will be routed to the root server.
+		FH DNS server should have the information about the root server.
+
+Let's see bit about the different level of DNS servers and how it will be traversed:
+
+	1] Root server
+		Root server is the topmost DNS server and all the top-level domain servers will be connected with Root server.
+	2] TLD Server (Top-Level Domain)
+		Commonly used domain extensions such as .com, .org, .in, .net, .edu etc.., domain names are known as TLD DNS server and it'll be connected directly to root server.
+
+	In order to avoid congestion, there will be more root server and TLD servers based on the region.
+	Root server and TLS server will be maintained Central Authority and if we need to add our domain as part of this means, we should pay some cost to CA.
+	
+	3] Based on TLD name, DNS resolve operation will be carried forward as it'll traverse further down the DNS server tree. (ie., Root server->.com TLD server -> microsoft server -> support DNS server -> customer web server).
+
+DNS Query Types:
+	(i) DNS recursive query,
+	(ii) DNS iterative query,
+	(iii) Reverse DNS query.
+
+Recursive DNS Query:
+	The DNS Query will be transmitted from end device to DNS resolver (First Hop DNS Server).
+	If the entry is not present, DNS resolver will forward the query to root server.
+	Root server will reply back with referral response to TLD server IP address to DNS resolver (i.e, Hey resolver, your TLD is .com and you can reach your TLD with this IP address).
+	Then, DNS resolver will again forward the query to TLD server and it'll again reply back with referral response.
+	Likewise, it will continue till the DNS resolver receives definite response for the provided domain name.
+	Once, DNS resolver receives definite response for the domain name it will be forwarded back to the end device.
+	Local cache of DNS resolver and end device will add this entry as part of it's local DNS cache.
+
+Iterative DNS Query:
+	In case of iterative DNS query, even DNS resolver will reply back with referral response (i.e, you can find the root server in this IP) and end device will continuously send DNS query and will get referral response as the reply. Once, it receives definite response it will add the output as part of it's local DNS cache.
+
+In packet, flag will denote whether the DNS Query is iterative or recursive.
+
+Reverse DNS Query:
+	As part of TLD server, there is one special domain ".arpa". This domain is used for reverse DNS query.
+	Under this TLD, there will be two servers one will hold IPv4 (in-addr) mapping and another will have IPv6(ip6) mapping.
+
+	Consider we need to find domain name for 203.31.113.2. Under arpa TLD server, domain name will be mapped in tree manner. So, provided IP will be reversed in order to fetch the domain name.
+
+	2.113.31.203.in-addr.arpa --> in-addr represents IPv4 and arpa represents reverse DNS is executed.
