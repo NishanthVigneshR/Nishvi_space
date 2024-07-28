@@ -60,4 +60,47 @@ int main() {
 	 *   Return value of lseek (SEEK_END) is 0
 	 *    Output after next read call : 14 : I have created
 	 */
+
+	// Noticed that we can specify the offset with negative integers as well. Let's try it out.
+	
+	ret = lseek(open_fd, 0, SEEK_SET); // fd moves to start
+	ret = read(open_fd, buf, 5);
+	buf[5] = '\0';
+	printf("After moving to beginning read 5 bytes, %s\n", buf);
+
+	ret = lseek(open_fd, 10, SEEK_SET);
+	ret = read(open_fd, buf, 5);
+	buf[5] = '\0';
+        printf("After moving to beginning n then 10 bytes offset, read 5 bytes, %s\n", buf);
+
+	ret = lseek(open_fd, -4, SEEK_CUR); //From Offset 15, going backwards 4 times.
+	ret = read(open_fd, buf, 5);
+	buf[5] = '\0';
+	printf("Used -4 from seek_curr n buf - %s\n", buf);
+
+	ret = lseek(open_fd, -10, SEEK_END);
+	ret = read(open_fd, buf, 5);
+	buf[5] = '\0';
+	printf("Moved to EOF n then decremented offset by 10, read 5 bytes n buf - %s\n", buf);
+#if 0
+	/* Output */
+	[root@localhost files]# ./a.out
+
+		Output after first read call : 10 : NishanthVi
+
+			Output after first read call : 5 : gnesh
+			Return value of lseek is 18
+
+			Output after next read call : 6 : pgemin
+			Return value of lseek (SEEK_END) is 37
+			EOF reached and read call returned 0
+			Return value of lseek (SEEK_END) is 0
+
+			Output after next read call : 14 : NishanthVignes
+			After moving to beginning read 5 bytes, Nisha
+			After moving to beginning n then 10 bytes offset, read 5 bytes, gnesh
+			Used -4 from seek_curr n buf - neshR
+			Moved to EOF n then decremented offset by 10, read 5 bytes n buf - ginee
+
+#endif
 }

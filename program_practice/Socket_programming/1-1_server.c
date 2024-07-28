@@ -19,7 +19,7 @@
 #include <arpa/inet.h>
 #include <string.h>
 
-#define SERVER_PORT 1500 //Server will use 1500 port for communication.
+#define SERVER_PORT 3000 //Server will use 1500 port for communication.
 
 void setup_tcp_server() {
 #if 1

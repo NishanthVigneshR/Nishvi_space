@@ -10,7 +10,7 @@ int main() {
 	scanf("%s", var);
 
 	while (var[index] != '\0') {
-		result = (result *10) + (var[index] - 48);
+		result = (result *10) + ((int)var[index] - 48);
 		index++;
 	}
 	printf("The provided number is %d\n", result);

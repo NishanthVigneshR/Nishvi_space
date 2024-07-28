@@ -12,6 +12,7 @@
 #include <sys/socket.h>
 #include <string.h>
 #include <netdb.h>
+#include <arpa/inet.h>
 
 #define PORT 3000
 #define SERVER_ADDR "127.0.0.1"
@@ -61,6 +62,7 @@ void setup_tcp_client() {
 	*/
 	host = (struct hostent *) gethostbyname(SERVER_ADDR);
 	server_info.sin_addr = *((struct in_addr *) host->h_addr);
+	printf("addr - %s\n", inet_ntoa(server_info.sin_addr));
 #endif
 
 #if 4

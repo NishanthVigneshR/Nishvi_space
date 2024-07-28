@@ -61,6 +61,9 @@ int main() {
 		printf("read system call failed and got below error\n");
 		perror("Error : ");
 		//return 0;
+	} else if (read_ret == 0) {
+		printf("Both read n write uses same offset pointer, so read will be at EOF n 0 bytes will be read\n");
+		perror("");
 	}
 	printf("Read %d bytes of data and read_data is %s\n", read_ret, read_buf);
 
@@ -101,5 +104,17 @@ int main() {
 	 * Thanks buddy!
 	 * [root@localhost files]# ./a.out
 	 * opening the file failed
+	 */
+
+	/* Output after lseek again.
+	 * [root@localhost files]# ./a.out
+	 * File opened successfully and it's fd : 3
+         * Successfully written 32 bytes of data to the file
+         * Successfully written 15 bytes of data to the file
+         * Both read n write uses same offset pointer, so read will be at EOF n 0 bytes will be read
+         * Success
+         * Read 0 bytes of data and read_data is
+         * Read failed, so seeking the file to beginning n lseek ret - 0
+         * [After seek] Read 15 bytes of data and read_data is hello dude ! al
 	 */
 }
